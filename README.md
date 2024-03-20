@@ -10,3 +10,14 @@
 
     1) Manual way    ( No Code Approach and it's 100% not recommended )
     2) Automated way ( YAML : Playbooks : 100% recommended approach )
+
+#### Install Ansible :
+
+curl https://gitlab.com/thecloudcareers/opensource/-/raw/master/lab-tools/ansible/install.sh | sudo bash
+
+To ansible, we need to supply the list of Servres that needs to be managed by ANSIBLE and we call that file as INVENTORY file.
+
+    Inventory File 
+    Destination Server Username & Password
+
+### Ansible is all about modules 
