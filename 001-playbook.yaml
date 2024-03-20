@@ -16,6 +16,6 @@
       ansible.builtin.debug:
         msg: "OLA from task1 of play2"
 
-    - name: Task2 of play2 
-      ansible.builtin.debug:
-        msg: "Namaste from task2 of play2"
+      - name: Task2 of play2 
+        ansible.builtin.debug:
+          msg: "Namaste from task2 of play2"
