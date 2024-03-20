@@ -61,4 +61,4 @@ Ansible expected the playbooks to have .yaml or yml as extensions
 
 ### How to run a playbook ?
 
-    ```$ ansible-playbook -i inv -e ansible_user=centos -e ansible_password=DevOps321 pbName.yaml```
+    ```$ ansible-playbook -i inv -e ansible_user=centos -e ansible_password=aasa11122xzs pbName.yaml```
