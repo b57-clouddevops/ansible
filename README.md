@@ -57,3 +57,8 @@ A play is a list of tasks!!!
 A task is nothing an aciton that you want ansible to perform
 
 Ansible expected the playbooks to have .yaml or yml as extensions
+
+
+### How to run a playbook ?
+
+    ```$ ansible-playbook -i inv -e ansible_user=centos -e ansible_password=DevOps321 pbName.yaml```
