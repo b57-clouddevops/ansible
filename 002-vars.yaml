@@ -1,0 +1,9 @@
+# In ansible, if you attempt to print a variable that is not decalred, ANSIBLE throws an exception!
+- name: Demo On Vars 
+  hosts: all 
+  vars:                          # Play level variables : if you declare a variable at play level, all tasks of the play can inherit them
+    URL: play.google.com
+  tasks:
+    - name: printing url
+      ansible.builtin.debug:
+        msg: Value of URL is {{URL}}      # in bash, we use "echo $URL"
