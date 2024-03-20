@@ -32,8 +32,26 @@ Automated way of dealing with ANSIBLE is with PLAYBOOKS. And playbooks can be wr
 
 Can I learn YAML ? Yes, in just 5 minutes : 
 
-    1) Dictionary 
-    2) List
-    3) Map
+    1) Dictionary    ( a key value pair)
+    2) List          ( a key with multiple values )
+    3) Map           ( a key with multiple keyValue pairs)
 
 YAML is indendation specific, that means spaces matters a lot.
+
+    A Key with a value is referred as dictionary 
+        name: ansible ( correct )
+        name:ansible ( incorrect )
+
+    A Key with multiple values is refereed as LIST 
+
+        courses:
+            - devops
+            - cloud
+            - kuberntes 
+
+# What is a Playbook ?
+    ``` scripts in ansible are referred as playbooks```
+
+A playbook is a list of plays!!!
+A play is a list of tasks!!!
+A task is nothing an aciton that you want ansible to perform
