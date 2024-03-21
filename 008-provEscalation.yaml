@@ -8,3 +8,7 @@
     - name: Printing user details
       ansible.builtin.debug:    
           msg: "userName is {{OUT.stdout}}" 
+  
+    - name: Creating roboshop useraccount
+      ansible.builtin.user:
+        name: robot
