@@ -7,4 +7,4 @@
 
     - name: Pritning uptime time 
       ansible.builtin.debug: uptime  
-      msg: Uptime is {{OUT}}
+        msg: Uptime is {{OUT}}
