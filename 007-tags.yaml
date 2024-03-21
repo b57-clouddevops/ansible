@@ -29,4 +29,4 @@
     - name: Starting DB
       ansible.builtin.debug:
         msg: Starting DB
-      tag: db
+      tags: db
