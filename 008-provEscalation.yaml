@@ -1,5 +1,6 @@
 - name: Demo on using shell Module  
   hosts: all 
+  become: yes 
   tasks: 
     - name: Checking user
       ansible.builtin.shell: id       
