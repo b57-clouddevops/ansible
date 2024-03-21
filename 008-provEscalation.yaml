@@ -1,10 +1,11 @@
 - name: Demo on using shell Module  
   hosts: all 
-  become: yes 
+  become: yes  # Run the playbook as a root user : This is like running the playbook as sudo : All the tasks of the playbook are executed as root user
   tasks: 
     - name: Checking user
       ansible.builtin.shell: id       
-      register: OUT                        
+      register: OUT         
+      become_user: centos               
 
     - name: Printing user details
       ansible.builtin.debug:    
