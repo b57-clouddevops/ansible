@@ -4,9 +4,9 @@
     - name: Run this only when the Distro is Centos
       ansible.builtin.debug:
         msg: OS Distro is {{ansible_distribution}} 
-      when: {{ansible_distribution}} == "CentOS"
+      when: ansible_distribution == "CentOS"
 
     - name: Run this only when the Distro is Ubuntu
       ansible.builtin.debug:
         msg: OS Distro is {{ansible_distribution}} 
-      when: {{ansible_distribution}} == "Ubuntu"
+      when: ansible_distribution == "Ubuntu"
