@@ -15,5 +15,5 @@
 
     - name: Run this action
       ansible.builtin.debug:
-        msg: Action is defined 
+        msg: Action is true 
       when: action
