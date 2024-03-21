@@ -1,0 +1,5 @@
+- name: Configuring Roboshop Project
+  become: true
+  hosts: frontend
+  roles:
+    - role: frontend                      # Name of the role to run 
