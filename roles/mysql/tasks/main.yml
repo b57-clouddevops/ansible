@@ -1,3 +1,6 @@
+- name: Disable default mysql version
+  ansible.builtin.shell: dnf module disable mysql -y
+
 - name: Configuring {{COMPONENT}} Repository
   ansible.builtin.copy:
     src: mysql.repo                                           # Location of the file on the machine where you're running this cript
