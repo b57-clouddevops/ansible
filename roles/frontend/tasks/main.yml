@@ -29,6 +29,7 @@
   ansible.builtin.systemd_service:
     state: restarted
     name: nginx
+    enabled: yes
     # daemon_reload: true
 
 - name: Running uptime time 
