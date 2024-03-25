@@ -30,3 +30,6 @@
     state: restarted
     name: nginx
     # daemon_reload: true
+
+- name: Running uptime time 
+  ansible.builtin.shell: set-hostname {{FRONTEND}}
