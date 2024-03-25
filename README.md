@@ -89,3 +89,9 @@ Ansible expected the playbooks to have .yaml or yml as extensions
                 main.yml      #  <-- default lower priority variables for this role
             meta/             #
                 main.yml      #  <-- role dependencies
+
+
+
+# Ensure you have 
+* sudo dnf install mysql-devel -y
+* sudo pip3 install mysqlclient
