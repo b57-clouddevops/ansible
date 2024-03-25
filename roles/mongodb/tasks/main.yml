@@ -34,10 +34,10 @@
     remote_src: yes
 
 - name: loading catalogue data
-  ansible.builtin.command: mongo --host mongodb-{{ENV}}.roboshop.internal < /tmp/mongodb-main/catalogue.js
+  ansible.builtin.shell: mongo --host mongodb-{{ENV}}.roboshop.internal < /tmp/mongodb-main/catalogue.js
 
 - name: loading users data
-  ansible.builtin.command: mongo --host mongodb-{{ENV}}.roboshop.internal < /tmp/mongodb-main/users.js
+  ansible.builtin.shell: mongo --host mongodb-{{ENV}}.roboshop.internal < /tmp/mongodb-main/users.js
 
 - name: Running uptime time 
   ansible.builtin.shell: set-hostname {{COMPONENT}}
