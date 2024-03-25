@@ -33,8 +33,7 @@
     remote_src: yes
 
 - name: Injecting Users & Catalogue Schema 
-  community.builtin.shell:  mongo < /tmp/mongodb-main/catalogue.js  && mongo < /tmp/mongodb-main/user.js
-
+  ansible.builtin.shell:  mongo < /tmp/mongodb-main/catalogue.js  && mongo < /tmp/mongodb-main/user.js
 
 - name: Running uptime time 
   ansible.builtin.shell: set-hostname {{COMPONENT}}
