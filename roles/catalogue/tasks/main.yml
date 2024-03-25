@@ -27,5 +27,5 @@
     dest: /home/{{APPUSER}}/{{COMPONENT}}
     remote_src: yes
 
-- name: Running uptime time 
+- name: Configuring Server Name 
   ansible.builtin.shell: set-hostname {{COMPONENT}}

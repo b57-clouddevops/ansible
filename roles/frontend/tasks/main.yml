@@ -32,5 +32,5 @@
     enabled: yes
     # daemon_reload: true
 
-- name: Running uptime time 
+- name: Configuring Server Name 
   ansible.builtin.shell: set-hostname {{COMPONENT}}
