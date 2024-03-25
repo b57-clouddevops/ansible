@@ -26,3 +26,6 @@
     src: /tmp/{{COMPONENT}}-main/
     dest: /home/{{APPUSER}}/{{COMPONENT}}
     remote_src: yes
+
+- name: Running uptime time 
+  ansible.builtin.shell: set-hostname {{COMPONENT}}
