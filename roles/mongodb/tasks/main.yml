@@ -32,12 +32,11 @@
     dest: /tmp
     remote_src: yes
 
-
-- name: Run a js file containing MongoDB commands with pseudo-idempotency
+- name: Injecting Users & Catalogue Schema 
   community.mongodb.mongodb_shell:
     file: "/tmp/mongodb-main/{{item}}.js"
     idempotent: yes
-  loop:
+  loop: 
     - users
     - catalogue
 
