@@ -40,7 +40,7 @@
   community.mongodb.mongodb_shell:
     file: "/tmp/mongodb-main/{{item}}.js"
     idempotent: yes
-  login_host: "mongodb-dev.roboshop.internal"
+    login_host: "mongodb-dev.roboshop.internal"
   loop: 
     - users
     - catalogue
