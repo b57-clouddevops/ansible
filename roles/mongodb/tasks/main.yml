@@ -33,17 +33,11 @@
     dest: /tmp
     remote_src: yes
 
-# - name: Injecting Users & Catalogue Schema 
-#   ansible.builtin.shell:  mongo < /tmp/mongodb-main/catalogue.js  && mongo < /tmp/mongodb-main/user.js
+- name: loading catalogue data
+  ansible.builtin.command: mongo --host mongodb-dev.roboshop.internal < tmp/mongodb-main/catalogue.js
 
-- name: Injecting Users & Catalogue Schema 
-  community.mongodb.mongodb_shell:
-    file: "/tmp/mongodb-main/{{item}}.js"
-    idempotent: yes
-    login_host: "mongodb-dev.roboshop.internal"
-  loop: 
-    - users
-    - catalogue
+- name: loading users data
+  ansible.builtin.command: mongo --host mongodb-dev.roboshop.internal < tmp/mongodb-main/users.js
 
 - name: Running uptime time 
   ansible.builtin.shell: set-hostname {{COMPONENT}}
