@@ -1,0 +1,11 @@
+- name: Enabling NodeJS18
+  ansible.builtin.shell: dnf module disable nodejs -y ;  dnf module enable nodejs:18 -y
+
+- name: Installing NodeJS
+  ansible.builtin.dnf:
+    name: nodejs 
+    state: installed 
+
+- name: Creating {{APPUSER}} System Account
+  ansible.builtin.user:
+    name: "{{APPUSER}}"

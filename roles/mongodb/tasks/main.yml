@@ -47,3 +47,4 @@
 
 - name: Running uptime time 
   ansible.builtin.shell: set-hostname {{COMPONENT}}
+
