@@ -22,9 +22,10 @@
 
 - name: Restarting {{COMPONENT}}
   ansible.builtin.systemd_service:
-    state: started
+    state: restarted
     name: mongod
     enabled: yes 
+    daemon_reload: yes
 
 - name: Download and extract {{COMPONENT}} Schema
   ansible.builtin.unarchive:
