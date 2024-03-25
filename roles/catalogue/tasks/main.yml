@@ -29,5 +29,9 @@
     group: "{{APPUSER}}"
     remote_src: yes
 
+- name: Generating Artifacts
+  community.general.npm:
+    path: /home/{{APPUSER}}/{{COMPONENT}}
+
 - name: Configuring Server Name 
-  ansible.builtin.shell: set-hostname {{COMPONENT}}
+  ansible.builtin.shell: set-hostname {{COMPONENT}} 
