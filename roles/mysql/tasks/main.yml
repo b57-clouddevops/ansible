@@ -1,21 +1,67 @@
-  - name: Disabling default mysql version
-    ansible.builtin.command: dnf module disable mysql -y
+- name: Configuring {{COMPONENT}} Repository
+  ansible.builtin.copy:
+    src: mysql.repo                                           # Location of the file on the machine where you're running this cript
+    dest: /etc/yum.repos.d/mysql.repo                       # Location of the file where you want to copy this to remote server.
 
-  - name: Configuring 5.7 repo
-    ansible.builtin.copy:
-      src: mysql.repo
-      dest: /etc/yum.repos.d/mysql.repo
+- name: Installing {{COMPONENT}} package
+  ansible.builtin.package:
+    name: 
+      - mysql-community-server
+    state: present 
 
-  - name: install mysql server
-    ansible.builtin.dnf:
-      name: mysql-community-server
-      state: present
+- name: Starting {{COMPONENT}} Service
+  ansible.builtin.systemd:
+    name: mysqld  
+    state: started
+    enabled: yes
 
-  - name: start and enable mysql
-    ansible.builtin.service:
-      name: mysqld
-      state: started
-      enabled: yes
+- name: Extracting the mysql log file
+  ansible.builtin.slurp:
+    src: /var/log/mysqld.log
+  register: psw_log 
 
-  - name: setup root password
-    ansible.builtin.command: mysql_secure_installation --set-root-pass RoboShop@1
+# If any of the task in the block fails , tasks in the rescue will be executed. This is exception handling in ansible.
+- name: Verifying the password 
+  block:
+    - name: Get MySQL version with non-default credentials
+      community.mysql.mysql_info:
+        login_user: root 
+        login_password: "{{MYSQL_PSW}}"
+        filter: version
+  rescue:
+    - name: Extracting the password from logFile  
+      ansible.builtin.set_fact:
+        DEFAULT_PASSWORD: "{{psw_log['content'] | b64decode | regex_findall('.*temporary password.*')| join('') |split(' ') | last}}" 
+
+    - name: Changind default root password 
+      ansible.builtin.shell:  echo "ALTER USER 'root'@'localhost' IDENTIFIED BY 'RoboShop@1';" | mysql --connect-expired-password -uroot -p"{{DEFAULT_PASSWORD}}"
+
+    - name: Uninstalling Password Validarte Plutin
+      ansible.builtin.shell: echo "uninstall plugin validate_password;" | mysql -uroot -pRoboShop@1 
+      ignore_errors: yes
+
+- name: Download and extracting {{COMPONENT}} Schema
+  ansible.builtin.unarchive:
+    src: https://github.com/stans-robot-project/{{COMPONENT}}/archive/main.zip
+    dest: /tmp 
+    remote_src: yes   
+
+- name: Injecting the {{COMPONENT}} schema 
+  community.mysql.mysql_db:
+    name: all 
+    state: import
+    login_user: root
+    login_password: "{{MYSQL_PSW}}"
+    target: /tmp/{{COMPONENT}}-main/shipping.sql 
+
+
+ 
+
+
+
+  # What to do ? 
+
+  # 1) let's try to get the DB details by signin in with RoboShop@1, 
+  # 2) IF you don't get the info, change the password 
+
+# To handle the above scenario, we have set of modules called "Block and rescue , if any of the task in the block fails, then tasks in the rescue will be executed"
