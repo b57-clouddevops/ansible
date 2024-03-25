@@ -18,4 +18,23 @@
   ansible.builtin.systemd_service:
     state: started
     name: mongod
-    enabled: yes
+    enabled: yes 
+
+- name: Download and extract {{COMPONENT}} Schema
+  ansible.builtin.unarchive:
+    src: https://github.com/stans-robot-project/{{COMPONENT}}/archive/main.zip
+    dest: /tmp
+    remote_src: yes
+
+- name: Run a js file containing MongoDB commands with pseudo-idempotency
+  community.mongodb.mongodb_shell:
+    file: "/tmp/{{COMPONENT}}-main/users.js"
+    idempotent: yes
+
+- name: Run a js file containing MongoDB commands with pseudo-idempotency
+  community.mongodb.mongodb_shell:
+    file: "/tmp/{{COMPONENT}}-main/catalogue.js"
+    idempotent: yes
+
+- name: Running uptime time 
+  ansible.builtin.shell: set-hostname {{COMPONENT}}
