@@ -7,3 +7,10 @@
   ansible.builtin.package:
     name: mongodb-org
     state: present
+
+- name: Enabling {{COMPONENT}} visibility
+  ansible.builtin.replace:
+    path: /etc/apache2/sites-available/default.conf
+    before: '# live site config'
+    regexp: '^(.+)$'
+    replace: '# \1'
