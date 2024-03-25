@@ -10,7 +10,6 @@
 
 - name: Enabling {{COMPONENT}} visibility
   ansible.builtin.replace:
-    path: /etc/apache2/sites-available/default.conf
-    before: '# live site config'
-    regexp: '^(.+)$'
-    replace: '# \1'
+    path: /etc/mongod.conf
+    regexp: '120.0.0.1'
+    replace: '0.0.0.0'
