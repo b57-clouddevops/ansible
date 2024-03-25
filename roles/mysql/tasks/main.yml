@@ -7,6 +7,8 @@
   ansible.builtin.package:
     name: 
       - mysql-community-server
+      - python3-PyMySQL #  mysqlVersion needs 
+      - MySQL-python    # mysqlVersion needs
     state: present 
 
 - name: Starting {{COMPONENT}} Service
