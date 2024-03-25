@@ -10,6 +10,7 @@
   ansible.builtin.package:
     name: 
       - mysql-community-server
+      - PyMySQL
       # - mysqlclient #  mysqlVersion needs 
       # - MySQL-python    # mysqlVersion needs
     state: present 
