@@ -23,4 +23,4 @@ mysql-dev.roboshop.internal
 shipping-dev.roboshop.internal
 
 [rabbitmq]
-rabbitmq-dev.roboshop.internal
+rabbimq-dev.roboshop.internal
