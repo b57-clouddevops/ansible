@@ -29,4 +29,3 @@
 
 - name: Configuring Name
   ansible.builtin.shell: set-hostname {{COMPONENT}}
-
