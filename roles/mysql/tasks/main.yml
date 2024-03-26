@@ -22,16 +22,22 @@
     src: /var/log/mysqld.log
   register: psw_log
 
-- name: Capturing the bash exit code 
-  ansible.builtin.set_fact:
-    DEFAULT_PASSWORD: "{{psw_log.content|b64decode | regex_findall('.*temporary password.*')| join('') | split(' ')|last}}"
+# These 3 tasks I would like to run only for the first time and not if the password is already changes
+# If any of the task in the block fails, then all the tasks in the rescue will be executed
+- name: validating the password 
+  block:
+    - name: Get MySQL version with non-default credentials
+      community.mysql.mysql_info:
+        login_user: root
+        login_password: "{{MYSQL_PSW}}"
+        filter: version
+  rescue:
+    - name: Capturing the bash exit code 
+      ansible.builtin.set_fact:
+        DEFAULT_PASSWORD: "{{psw_log.content|b64decode | regex_findall('.*temporary password.*')| join('') | split(' ')|last}}"
 
-- name: Printing Def psw
-  ansible.builtin.debug:
-    msg: "{{DEFAULT_PASSWORD}}"
+    - name: Changing the default password 
+      ansible.builtin.shell: echo "ALTER USER 'root'@'localhost' IDENTIFIED BY 'RoboShop@1'" | mysql  --connect-expired-password -uroot -p"{{DEFAULT_PASSWORD}}"
 
-- name: Changing the default password 
-  ansible.builtin.shell: echo "ALTER USER 'root'@'localhost' IDENTIFIED BY 'RoboShop@1'" | mysql  --connect-expired-password -uroot -p"{{DEFAULT_PASSWORD}}"
-
-- name: Uninstalling Password Validate Plugin
-  ansible.builtin.shell: echo "uninstall plugin validate_password" | mysql -uroot -pRoboShop@1
+    - name: Uninstalling Password Validate Plugin
+      ansible.builtin.shell: echo "uninstall plugin validate_password" | mysql -uroot -pRoboShop@1
