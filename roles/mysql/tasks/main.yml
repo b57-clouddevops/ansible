@@ -10,6 +10,7 @@
   ansible.builtin.dnf:
     name:
       - mysql-community-server
+      - pymysql
     state: present
 
 - name: Starting {{COMPONENT}} Service
