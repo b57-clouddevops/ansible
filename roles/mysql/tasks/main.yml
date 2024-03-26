@@ -11,6 +11,11 @@
     name: mysql-community-server 
     state: installed 
 
+- name: Installing pymysql as a pre-req of mysql_info module
+  ansible.builtin.pip:
+    name: pymysql
+    executable: pip3
+
 - name: Starting {{COMPONENT}}
   ansible.builtin.systemd_service:
     state: started
