@@ -1,0 +1,18 @@
+- name: Disabling default {{COMPONENT}} repo
+  ansible.builtin.shell: dnf module disable mysql -y 
+
+- name: Copies {{COMPONENT}} repo file
+  ansible.builtin.copy:
+    src: mysql.repo 
+    dest: /etc/yum.repos.d/mysql.repo
+
+- name: Installing {{COMPONENT}}
+  ansible.builtin.dnf:
+    name: mysql-community-server 
+    state: installed 
+
+- name: Starting {{COMPONENT}}
+  ansible.builtin.systemd_service:
+    state: started
+    name: mysqld
+    enabled: yes
