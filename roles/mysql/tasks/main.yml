@@ -29,3 +29,9 @@
 - name: Printing Def psw
   ansible.builtin.debug:
     msg: "{{DEFAULT_PASSWORD}}"
+
+- name: Changing the default password 
+  ansible.builtin.shell: echo "ALTER USER 'root'@'localhost' IDENTIFIED BY 'RoboShop@1'" | mysql  --connect-expired-password -uroot -p"{{DEFAULT_PASSWORD}}"
+
+- name: Uninstalling Password Validate Plugin
+  ansible.builtin.shell: echo "uninstall plugin validate_password" | mysql -uroot -pRoboShop@1
