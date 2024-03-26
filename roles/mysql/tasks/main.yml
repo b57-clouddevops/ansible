@@ -10,8 +10,12 @@
   ansible.builtin.dnf:
     name:
       - mysql-community-server
-      - pymysql
     state: present
+
+- name: Installing pip
+  ansible.builtin.pip:
+    name: pymysql
+    executable: pip3
 
 - name: Starting {{COMPONENT}} Service
   ansible.builtin.systemd:
