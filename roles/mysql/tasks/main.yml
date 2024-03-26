@@ -16,3 +16,12 @@
     state: started
     name: mysqld
     enabled: yes
+
+- name: Extracting {{COMPONENT}} password file 
+  ansible.builtin.slurp:
+    src: /var/log/mysqld.log
+  register: psw_log
+
+- name: Extracting {{COMPONENT}} password file 
+  ansible.builtin.debug:
+    msg: "{{psw_log}}"
