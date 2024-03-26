@@ -22,6 +22,10 @@
     src: /var/log/mysqld.log
   register: psw_log
 
-- name: Extracting {{COMPONENT}} password file 
+- name: Capturing the bash exit code 
+  ansible.builtin.set_fact:
+    DEFAULT_PASSWORD: "{{psw_log.content|b64decode}}"
+
+- name: Printing Def psw
   ansible.builtin.debug:
-    msg: "{{psw_log}}"
+    msg: "{{DEFAULT_PASSWORD}}"
