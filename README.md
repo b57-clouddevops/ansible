@@ -111,6 +111,7 @@ Ansible expected the playbooks to have .yaml or yml as extensions
 
                 1) Placing the ANSIBLE Installation Script as a part of the system start up 
                 2) Ensure the AMI that you're using for your server creation should have Ansible Installed 
+                3) As of today, ansible-pull can only fetch the code from GIT based repositories only
 
 
     
