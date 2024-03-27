@@ -23,6 +23,7 @@ To ansible, we need to supply the list of Servres that needs to be managed by AN
     Inventory File 
     Destination Server Username & Password
 
+
 ### Ansible is all about modules 
 ansible all -i inv -e ansible_user=centos -e ansible_password=DevOps321 -m shell -a uptime
 

@@ -1,0 +1,4 @@
+- name: Creating {{APPUSER}} System Account
+  ansible.builtin.user:
+    name: "{{APPUSER}}"
+
