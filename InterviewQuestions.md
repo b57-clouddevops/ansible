@@ -381,6 +381,15 @@ All of them are variable types :
 
 43) Explain best practices for managing secrets and sensitive data within Ansible playbooks using Ansible Vault.
 
+```
+Ensure you follow the secretsManager discussed in the session.
+```
+
 44) How to run the playbook on debug mode 
+
+```
+ansible-playbook robot-dryrun.yaml -e COMPONENT=mongodb -e ansible_user=centos -e ansible_password=xyz123 -e ENV=qa
+
+```
 
 
