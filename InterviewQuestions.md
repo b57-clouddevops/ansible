@@ -2,17 +2,60 @@
 
 1) Why ansible is famouse and list me 3 points on why do I need to adopt ?
 
+    ```
+        * Ansible Is Agentless that means you don't have to install any agent on any of the managed nodes
+        * This is openSource and it works on default ssh mechanism.
+        * This is modular rich, works on YAML.
+        * It has the capability to work both on Push and Pull
+    ```
+
 2) What is the default ansible mechanism ?
+
+```
+    1) Ansible uses SSH as the connection mechanism either by Key Pair based or Password based.
+    2) By default, it works on Push, but right now Ansible also supports Pull Based Mechanism, it can pick the playbooks from GIT Only
+```
 
 3) If you're asked to decided on the usage of Pull vs Push, what would you select and would be the factors that determine the usage ?
 
+```
+If the Infra is Dynamic , that means where the infra scales-out and in dynamically in this case we prefer going with PULL based mechanism.
+If the infra is stratic, we go with PUSH Based mechanism by managing the inventory.
+```
+
 4) Assume your infra is dynamic that scales out & in dynamically and in this case, would you prefer to use push or pull ?
 
+```
+    Since the infra is dynamic we would keep the playbooks on GIT and call them by using ansible-pull either from provisioners or from the user-data.
+```
+
 5) What is the need of ROLES in ansible ?
+```
+Ansible Roles keeps the code dry and usage and here are the reasons on why we use Roles In Ansible.
+    1) Reusability
+    2) Modularity
+    3) Organizing the role and defining the role-dependencies
+```
 
 6) If the values of the variables are declared both in vars/main.yml and default/main.yml, which among these will have priority ?
+```
+    vars/ will have high priority, but we delae default values in default/ . But in case if the varaible is delcared in both the places then it goes by priority on vars/
+```
 
 7) What is the eariest way to organize the varaibles in files based on the environment ? Can we supply the vairablesin files ?
+
+```
+    The easiest way to organize is by organizing them by using roles.
+    But we can also supply the values based on the files as well, we can declare the values in dev.yaml or qa.yaml and decalre that from the playbook
+
+        Ex: 
+            - name: Demo on using variables on playbooks  
+            hosts: all 
+            vars:                                 # Global Variables : Variables can be acessed by all the tasks of the play. 
+                URL: play.google.com
+            vars_files:
+                - dev-vars.yml
+```
 
 8) How to call a role from another rle using the task name ?
 
