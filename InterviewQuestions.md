@@ -134,49 +134,218 @@ Example : https://github.com/b54-clouddevops/ansible/blob/main/roles/frontend/me
 ```
 become is a directive used for privilege escalation in ansible and this helps to run the playbook as a root user.
 
-If you want to run specific tasks 
+If you want to run specific tasks with a specific user we use "become_user: userName"
 ```
 
 13) What's the purpose of rescue module and when do you use that ?
 
+If any of mentioned tasks in the block of tasks fails, then the tasks mentioned in the rescue will be executed.
+
+```
+https://github.com/b57-clouddevops/ansible/blob/main/roles/mysql/tasks/main.yml#L33
+
+- name: validating the password 
+  block:
+    - name: Get MySQL version with non-default credentials
+      community.mysql.mysql_info:
+        login_user: root
+        login_password: "{{MYSQL_PSW}}"
+        filter: version
+  rescue:
+    - name: Capturing the bash exit code 
+      ansible.builtin.set_fact:
+        DEFAULT_PASSWORD: "{{psw_log.content|b64decode | regex_findall('.*temporary password.*')| join('') | split(' ')|last}}"
+
+    - name: Changing the default password 
+      ansible.builtin.shell: echo "ALTER USER 'root'@'localhost' IDENTIFIED BY 'RoboShop@1'" | mysql  --connect-expired-password -uroot -p"{{DEFAULT_PASSWORD}}"
+
+    - name: Uninstalling Password Validate Plugin
+      ansible.builtin.shell: echo "uninstall plugin validate_password" | mysql -uroot -pRoboShop@1 
+```
+
 14) Situation, if any of the 3 tasks in a playbook fails then I would like to run 5 specific tasks on the 3 tasks failure, how can we deal that ?
+
+This is doable with the usage of block+rescue
+
+```
+Example :
+
+- name: validating the password 
+  block:
+    - name: Get MySQL version with non-default credentials
+      community.mysql.mysql_info:
+        login_user: root
+        login_password: "{{MYSQL_PSW}}"
+        filter: version
+  rescue:
+    - name: Capturing the bash exit code 
+      ansible.builtin.set_fact:
+        DEFAULT_PASSWORD: "{{psw_log.content|b64decode | regex_findall('.*temporary password.*')| join('') | split(' ')|last}}"
+
+    - name: Changing the default password 
+      ansible.builtin.shell: echo "ALTER USER 'root'@'localhost' IDENTIFIED BY 'RoboShop@1'" | mysql  --connect-expired-password -uroot -p"{{DEFAULT_PASSWORD}}"
+
+    - name: Uninstalling Password Validate Plugin
+      ansible.builtin.shell: echo "uninstall plugin validate_password" | mysql -uroot -pRoboShop@1 
+```
+if any of the tasks in block fails then, all the tasks of the rescue will be executed.
+
 
 15) What is a BLOCK in ansible ?
 
+```
+This helps us to run a block of tasks with a single condition.
+```
+
 16) How can we extract a specific string consider a password from a file that's available on a remote host 
+
+```
+This can be done by using the slurp module and get the file locally and then run the filters. Here is a classic example on using this scenario
+
+- name: Extracting {{COMPONENT}} password file 
+  ansible.builtin.slurp:
+    src: /var/log/mysqld.log
+  register: psw_log
+
+- name: validating the password 
+  block:
+    - name: Get MySQL version with non-default credentials
+      community.mysql.mysql_info:
+        login_user: root
+        login_password: "{{MYSQL_PSW}}"
+        filter: version
+  rescue:
+    - name: Capturing the bash exit code 
+      ansible.builtin.set_fact:
+        DEFAULT_PASSWORD: "{{psw_log.content|b64decode | regex_findall('.*temporary password.*')| join('') | split(' ')|last}}"
+```
 
 17) What's the main purpose of SLURP function in ansible ?
 
+```
+slurp module helps in fetching the file on the remote machine and running the commands/filters of your choice on the file locally.
+```
+
 18) What is the different between collections vs module ?
+
+```
+Both of them are same. From version version 3.0, we are calling the modules as collections.
+
+Also from collections, they have diversified the building, thridparty or community supplied can be seen.
+```
 
 19) How can we control the facts not to be collected by Ansible Controller ?
 
+```
+facts is nothing but the properties collected by the ansible-controller.
+
+By default facts are collected and if you want to stop them, you can delcare it by using the below mentioned way :
+
+Reference Line : https://github.com/b57-clouddevops/ansible/blob/main/003-facts.yaml#L10
+```
+
 20) What is the port number used by ansible ?
+
+```
+Ansible is agentless and it works on SSH mechanism and that means it goes by port 22
+```
 
 21) What are the packages that needs to be installed on remote nodes that needs to be controlled by ansible ?
 
+```
+Ansible is agentless and it works on SSH mechanism and that means it goes by port 22. So you don't need to install anything specific.
+```
+
 22) Why ansible is referred as AGENT-lESS
+```
+it works on SSH mechanism and that means it goes by port 22. So you don't need to install anything specific.
+```
 
 23) If there are any sensitive pieces of information on your playbook like API Tokens, what's the strategy that you would follow to encrypt them ?
 
+```
+You can use ansible-vault to encrypt the sensitive content. But it's not recommended just to use vault.
+
+But here is the usage on how to use ansible-vault
+
+    $ ansible-vault encrypt_string pswrd1432    ( enter the password to give you the encrypted string and supply the password when you run the playook )
+
+    $ ansible-playbook -i inv -e ansible_user=centos -e ansible_password=xyz123 13-vault.yaml --ask-vault-password
+
+Example Usage :
+    https://github.com/b54-clouddevops/ansible/blob/main/13-vault.yaml
+
+```
+
 24) How can extract all the facts gather by ANSIBLE ?
+
+```
+* Ansible uses a module called as setup using that we can check the collected facts 
+
+    $ ansible -i inventory all -m setup 
+```
 
 25) How do you manage package installations using Ansible?
 
+```
+We can use the package module and using this we we can install packages and we can also conditionalize it. Here is teh sameple usage.
+
+https://github.com/b57-clouddevops/ansible/blob/main/010-package.yaml
+
+```
+
 26) What is the difference between register and set_fact? When to use what ?
 
-27) How do you loop over items in Ansible? 
+Both register and set_fact are used in Ansible to manage variables, but they serve different purposes:
+
+```
+register:
+
+    Used to capture the output of a module or task.
+    Stores the output in a temporary variable accessible within the same playbook or role.
+    Useful for processing or referencing module results later in the playbook.
+set_fact:
+
+    Explicitly defines a new variable with a specific value.
+    The variable becomes available throughout the remaining playbook or role.
+    Used to create custom variables for calculations, conditional logic, or passing data between tasks.
+```
+
+27) Can we use ansible in dry-run mode ?
+
+```
+ansible-playbook robot-dryrun.yaml -e COMPONENT=mongodb -e ansible_user=centos -e ansible_password=xyz123 -e ENV=qa
+```
 
 28) How do you handle errors in Ansible playbooks? 
     ``` Use ignore_errors or failed_when to manage task failures.```
 
 29) What is an inventory file in ansible ?
 
-30) When to use ansible vs ansible-playbook vs ansible-pull ?
+```
+This is the file where we mention all the details of the resources that needs configuration managemet
+```
+
+30) When to use ansible-playbook vs ansible-pull ?
+
+```
+Push Method can be run by using "ansible-playbook"
+Push Method can be run by using "ansible-pull -u URL playbbok.yml"
+
+```
 
 31) If your playbook is on DRIVE, can you run it using ansible-pull ?
 
+```
+ansible-pull only supports the playbook on git and apart from git none of teh sources are not allowed.
+```
+
 32) What are the pre-requisites for ansible to operate using ansible-pull 
+
+```
+    1) Ansible to be available on that node that needs to run ansible-pull 
+    2) Node should be able to access the playbook on github
+```
 
 33) How does Ansible differ from other configuration management tools like Puppet or Chef?
 
@@ -185,6 +354,14 @@ If you want to run specific tasks
     * Ansible is easy to learn and doesn’t require a master-agent architecture.
 
 34) What is the difference between list vs dictionary vs map object in YAML ?
+
+```
+All of them are variable types :
+
+    1) key with a value is referred as Dictionary 
+    2) key with multiple values is referred as list 
+    3) key with multiple key value pairs is referred as MAP
+```
 
 35) How can you leverage Ansible Vault to manage secrets for different environments (e.g., dev, test, prod)?
 
