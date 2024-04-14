@@ -1,4 +1,6 @@
-# Ansible Interview Questions
+# Ansible Interview Questions 
+
+### PS: Pleaes ensure you prepare the topics and then draft and prepare your own answers and that's the correct Approach)
 
 1) Why ansible is famouse and list me 3 points on why do I need to adopt ?
 
@@ -57,15 +59,83 @@ Ansible Roles keeps the code dry and usage and here are the reasons on why we us
                 - dev-vars.yml
 ```
 
-8) How to call a role from another rle using the task name ?
+8) How to call a role from another role using the task name ?
+
+```
+When you call a role by default the main.yaml file will be picked up, but if want to call another file in the tasks/ folder, we can do that by using the below syntax : 
+
+- name: Creating App User 
+  ansible.builtin.include_role:
+    name: common
+    tasks_from: create_user
+
+create_user is the task called from another role common
+```
 
 9) What all modules have you used in Ansible and which version of ansible are you using ?
 
+```
+Mention all of the moduels you've used in the training. But the answer should be based on the requirement I use the ansible documentation 
+    get_url 
+    wget 
+    copy
+    template
+    block_in_file
+    line_in_file
+    service
+    systemd
+    register
+    set_fact
+    shell
+    package
+    yum
+    debug
+```
+
 10) What is the notify keyword in Ansible? Scenario, I want to make sure that service should only be restarted if there is a change in the file, how can you accomplish that ?
 
-11) What is ROLE DEPENDENCY and what's the purpose of it and when to use that ?
+```
+notify helps to run a particular task if some task is executed or changed. It's just like a reactive action.
 
+Ex: https://github.com/b54-clouddevops/ansible/blob/main/roles/frontend/tasks/main.yml#L27
+
+# If the source you're trying to copy is on the remote machine, ensure you give the remote_src as yes
+- name: Copying the proxy config
+  ansible.builtin.template:
+    src: roboshop.conf
+    dest: /etc/nginx/default.d/roboshop.conf
+  notify: Retarting Nginx
+
+
+If there is any change in the mentioned task, then the task mentioned in the folder handlers with the task name "Retarting Nginx" will be called.
+```
+
+11) What is ROLE DEPENDENCY and what's the purpose of it and when to use that ?
+```
+Role dependencies define a specific order for running roles within a playbook. Here's the concept explained with an example:
+
+    *   It specifies roles that need to be executed before the current role can function properly.
+    *   This ensures the target system is in a prepared state for the current role's tasks.
+
+Imagine you have two roles:
+
+webserver: This role installs and configures a web server like Apache.
+webapp: This role deploys your web application code and configures it to work with the web server.
+Here, the webapp role clearly depends on the webserver role being run first. The web server needs to be installed and configured before you can deploy your web application.
+
+
+dependencies:
+  - webserver  # This role needs webserver to be run first
+
+Example : https://github.com/b54-clouddevops/ansible/blob/main/roles/frontend/meta/main.yml
+```
 12) What is the purpose of the become directive in Ansible? Can we run a playbook with 5 tasks as a root user and x-task in that 5 tasks as centos user 
+
+```
+become is a directive used for privilege escalation in ansible and this helps to run the playbook as a root user.
+
+If you want to run specific tasks 
+```
 
 13) What's the purpose of rescue module and when do you use that ?
 
