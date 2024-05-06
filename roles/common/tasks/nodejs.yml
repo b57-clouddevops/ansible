@@ -11,14 +11,26 @@
     name: common
     tasks_from: create_user
 
-- name: Dealing Artifacts
+- name: Downloading .pem file 
+  ansible.builtin.get_url:
+    url: https://truststore.pki.rds.amazonaws.com/global/global-bundle.pem
+    dest: /home/{{APPUSER}}/global-bundle.pem 
+  become_user: "{{APPUSER}}"
+
+## Uncomment this if you want to use the artifacts from Github
+# - name: Dealing Artifacts
+#   ansible.builtin.include_role:
+#     name: common
+#     tasks_from: download_and_extract
+
+# - name: Generating Artifacts
+#   community.general.npm:
+#     path: /home/{{APPUSER}}/{{COMPONENT}}
+
+- name: Downloading Artifacts From Nexus
   ansible.builtin.include_role:
     name: common
-    tasks_from: download_and_extract
-
-- name: Generating Artifacts
-  community.general.npm:
-    path: /home/{{APPUSER}}/{{COMPONENT}}
+    tasks_from: download_from_nexus
 
 - name: Configuring Svc
   ansible.builtin.include_role:
