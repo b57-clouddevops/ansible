@@ -17,15 +17,15 @@
 #     name: common
 #     tasks_from: download_and_extract
 
-# - name: Genetating Artifacts 
-#   ansible.builtin.pip:
-#     requirements: /home/{{APPUSER}}/{{COMPONENT}}/requirements.txt 
-#     executable: pip3.6 
-
 - name: Downloading Artifacts From Nexus
   ansible.builtin.include_role:
     name: common
     tasks_from: download_from_nexus
+
+- name: Genetating Artifacts 
+  ansible.builtin.pip:
+    requirements: /home/{{APPUSER}}/{{COMPONENT}}/requirements.txt 
+    executable: pip3.6 
 
 - name: Configuring Svc
   ansible.builtin.include_role:
