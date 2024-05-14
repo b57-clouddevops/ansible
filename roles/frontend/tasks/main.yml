@@ -7,8 +7,8 @@
   ansible.builtin.unarchive:
     src: http://172.31.38.109:8081/repository/{{COMPONENT}}/{{COMPONENT}}-{{APP_VERSION}}.zip
     dest: /tmp
+    remote_src: yes 
  
-
 - name: Cleanup of Old HTML Content
   ansible.builtin.file:
     path: /usr/share/nginx/html/
