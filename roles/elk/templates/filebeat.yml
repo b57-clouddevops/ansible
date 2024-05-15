@@ -8,9 +8,10 @@ filebeat.inputs:
   paths:
     - "{{LOG_LOCATION}}"
 
-  #fields:
-  #  level: debug
-  #  review: 1
+  fields:
+    level: "{{COMPONENT}}"
+    logtype: {{LOGTYPE}}
+
 
 setup.kibana:
 
