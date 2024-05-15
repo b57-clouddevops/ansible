@@ -2,6 +2,9 @@ filebeat.inputs:
 - type: log
   id: log 
   enabled: true
+{% if LOGTYPE == "json" %}
+  json.keys_under_root: true 
+{% endif %}
   paths:
     - "{{LOG_LOCATION}}"
 
