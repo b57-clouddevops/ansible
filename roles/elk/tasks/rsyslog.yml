@@ -1,0 +1,11 @@
+- name: Copying the rsyslog config 
+  ansible.builtin.template:
+    src: rsyslog.conf 
+    dest: /etc/yum.repos.d/elastic.repo 
+
+- name: Restart rsyslog  
+  ansible.builtin.service:
+    name: rsyslog   
+    state: restarted
+    enabled: true 
+    daemon_reload: true 
