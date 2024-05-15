@@ -1,6 +1,6 @@
 - name: Copying the rsyslog config 
   ansible.builtin.template:
-    src: rsyslog.conf
+    src: syslog.conf
     dest: /etc/rsyslog.d/rsyslog.conf
 
 - name: Restart rsyslog  
