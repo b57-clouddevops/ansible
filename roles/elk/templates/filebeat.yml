@@ -9,8 +9,8 @@ filebeat.inputs:
     - "{{LOG_LOCATION}}"
 
   fields:
-    level: "{{COMPONENT}}"
-    logtype: {{LOGTYPE}}
+    component: "{{COMPONENT}}"
+    logtype: "{{LOGTYPE}}"
 
 
 setup.kibana:
