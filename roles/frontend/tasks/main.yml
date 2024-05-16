@@ -33,8 +33,9 @@
 - name: Starting nginx 
   ansible.builtin.systemd:
     name: nginx 
-    state: started
+    state: restarted
     enabled: true
+    daemon_reload: yes
 
 # - name: configuring rsyslog
 #   ansible.builtin.include_role:
