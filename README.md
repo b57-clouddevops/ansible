@@ -121,6 +121,13 @@ Ansible expected the playbooks to have .yaml or yml as extensions
     Grok Debugger : This tool can convert the unstructured logs to structued.
 ```
 
+### How to convert the unstructued logs to structued in ELK ?
+```
+    Using GROK Debugger : https://grokdebugger.com/
+
+    How do we know the patterns : https://github.com/hpcugent/logstash-patterns/blob/master/files/grok-patterns
+```
+
 ### Grok Pattern for the above log :
 
 ```
