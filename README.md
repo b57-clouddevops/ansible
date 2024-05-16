@@ -114,4 +114,15 @@ Ansible expected the playbooks to have .yaml or yml as extensions
                 3) As of today, ansible-pull can only fetch the code from GIT based repositories only
 
 
-    
+
+
+### How to convert Unstructred Logs To Structued ???/
+```
+    Grok Debugger : This tool can convert the unstructured logs to structued.
+```
+
+### Grok Pattern for the above log :
+
+```
+    %{HTTPDATE:log_timestamp}%{SPACE}%{IP:source_ip}%{SPACE}%{WORD:method}%{SPACE}%{PATH:http_path}%{SPACE}%{WORD}/%{NUMBER}%{SPACE}%{NUMBER:http_status:int}%{SPACE}%{NUMBER:no_of_bytes_sent:int}%{SPACE}%{NUMBER:response_time:float}
+```
