@@ -1,7 +1,7 @@
 - name: Copying prometheus config 
   ansible.builtin.template:
     src: prometheus.yml
-    dest: /etc/logstash/conf.d/logstash.conf 
+    dest: /opt/prometheus/prometheus.yml
 
 - name: Restart Prometheus                      # Keep in mind that logstash restart takes log of time, ensure 5044 comes up to mark it as up.
   ansible.builtin.systemd:
